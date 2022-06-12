@@ -1,0 +1,37 @@
+Description: >
+  R. O. Olatunji 
+  Server Resources such as Ec2 intance, Database, loadbalancer 
+  security group for each resources 
+Parameters:
+  EnvironmentName:
+    Description: An Environment name for my resources
+    Type: String|Number|CommaDelimitedList
+
+Resources:
+  WebServerSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: 
+      GroupDescription: Allow HTTP to our hosts and SSH  from local only
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${EnvironmentName}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0 
+          
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0 
+
+  
+
+      
